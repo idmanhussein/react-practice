@@ -1,22 +1,23 @@
-import React from "react";
-import Navbar from "./Components/Navbar";
-import BookList from "./Components/BookList";
-import ThemeContextProvider from "./Contexts/ThemeContext";
-import ThemeToggle from "./Components/ThemeToggle";
-import AuthContextProvider from "./Contexts/AuthContext";
+import React, { Component, createContext } from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <ThemeContextProvider>
-        <AuthContextProvider>
-          <Navbar />
-          <BookList />
-          <ThemeToggle />
-        </AuthContextProvider>
-      </ThemeContextProvider>
-    </div>
-  );
+export const AuthContext = createContext();
+
+class AuthContextProvider extends Component {
+  state = {
+    isAuthenticated: false,
+  };
+  toggleAuth = () => {
+    this.setState({ isAuthenticated: !this.state.isAuthenticated });
+  };
+  render() {
+    return (
+      <AuthContext.Provider
+        value={{ ...this.state, toggleAuth: this.toggleAuth }}
+      >
+        {this.props.children}
+      </AuthContext.Provider>
+    );
+  }
 }
 
-export default App;
+export default AuthContextProvider;
